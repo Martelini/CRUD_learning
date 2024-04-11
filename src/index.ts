@@ -18,6 +18,8 @@ async function run() {
         console.log("Pinged your deployment. You successfully connected to MongoDB");    
     } finally {
         await client.close();
+        console.log("Closed");
     }
 }
-run.catch(console.dir);
+run();
+
