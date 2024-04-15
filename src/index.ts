@@ -1,32 +1,8 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
 import express from 'express';
-import { router } from '../routes/smart.routes'
-
-const uri = 'mongodb+srv://souzamateus1998:EV5EGbftxv1fMPMx@cluster0.scduko7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
-
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
+import { router } from '../routes/smart.routes';
+import { connectToDatabase } from '../lib/mongo_connection';
 
 const app = express();
-
-async function connectToDatabase() {
-    try {
-        await client.connect();
-        console.log('Connected to database!');    
-        //await client.db("admin").command({ ping: 1}); 
-    } catch (error) {
-        //await client.close();
-        let message = 'Unknown error';
-        if (error instanceof Error)
-            message = error.message;
-        reportError({message});
-    }
-}
 
 async function setServer() {
     try {
@@ -42,11 +18,9 @@ async function setServer() {
     }
 }
 
-// routes
+// route
 
 app.use('', router);
-
-
 
 connectToDatabase();
 setServer();
