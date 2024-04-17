@@ -18,6 +18,10 @@ async function setServer() {
     }
 }
 
+// middleware
+
+app.use(express.json());
+
 // route
 
 app.use('', router);
