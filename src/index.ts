@@ -1,30 +1,20 @@
+import { User } from './entities/user';
+import { startServer, setServer } from './infrastructure/express/app';
+import { connectToDatabase, getCollection } from './infrastructure/mongodb/mongoConnection';
+import { createUserRouter } from './infrastructure/routes/userRoutes';
+import { MongoDbUserRepository } from './interfaces/repositories/user_repository';
 import express from 'express';
-import { router } from '../routes/smart.routes';
-import { connectToDatabase } from '../lib/mongo_connection';
 
+const url = 'mongodb+srv://souzamateus1998:EV5EGbftxv1fMPMx@cluster0.scduko7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const app = express();
 
-async function setServer() {
-    try {
-        app.listen(3000, () => {
-            console.log("Server is running on port 3000!");
-        });
-
-    } catch (error) {
-        let message = 'Unknown error';
-        if (error instanceof Error)
-            message = error.message;
-        reportError({message});
-    }
+async function startApp(): Promise<void> {
+    await connectToDatabase(url, 'smart');
+    const userCollection = getCollection<User>('users');
+    const userRepository = new MongoDbUserRepository(userCollection);
+    
+    setServer(app, userRepository);
+    startServer(app);
 }
 
-// middleware
-
-app.use(express.json());
-
-// route
-
-app.use('', router);
-
-connectToDatabase();
-setServer();
+startApp();
