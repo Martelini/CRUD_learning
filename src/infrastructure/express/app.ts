@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 import { createUserRouter } from '../routes/userRoutes';
-import { UserRepository } from '../../application/get_all_users';
+import { UserRepository } from '../../application/getAllUsers';
 
 export async function setServer(app: Express, userRepository: UserRepository): Promise<void> {
     const router = createUserRouter(userRepository);

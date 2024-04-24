@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { HttpRequest, HttpResponse } from "../../interfaces/adapters/http";
+import { HttpRequest, HttpResponse } from "../../interfaces/adapters/httpParams";
 
 export class HttpAdapter implements HttpRequest, HttpResponse {
     private req: Request;

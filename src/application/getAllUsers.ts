@@ -1,8 +1,4 @@
-import { User } from "../entities/user";
-
-export interface UserRepository {
-    getAllUsersInfo(): Promise<User[]>;
-}
+import { UserRepository } from "./useCasesInterfaces";
 
 export class GetAllUsersUseCase {
     userRepository: UserRepository;
@@ -13,6 +9,6 @@ export class GetAllUsersUseCase {
 
     async execute() {
         console.log("get_all_users: execute");
-        return await this.userRepository.getAllUsersInfo();
+        return await this.userRepository.getAllUsers();
     }
 }

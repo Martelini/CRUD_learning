@@ -1,13 +1,18 @@
 import { Router } from "express";
-import { UserController } from "../../interfaces/controllers/controllers";
-import { GetAllUsersUseCase, UserRepository } from "../../application/get_all_users";
+import { UserController } from "../../interfaces/controllers/userControllers";
+import { GetAllUsersUseCase } from "../../application/getAllUsers";
+import { UserRepository } from "../../application/useCasesInterfaces";
+import { CreateUserUseCase } from "../../application/createUser";
 
 export function createUserRouter(userRepository: UserRepository): Router {
     const router = Router();
     const getAllUsersUseCase = new GetAllUsersUseCase(userRepository)
-    const userController = new UserController(getAllUsersUseCase);
+    const createUserUseCase = new CreateUserUseCase(userRepository)
+    const userController = new UserController(getAllUsersUseCase, createUserUseCase);
 
     router.get('/users/all', userController.getAllUsers.bind(userController));
+
+    router.put('/users/all', userController.createUser.bind(userController));
 
     return router;
 }

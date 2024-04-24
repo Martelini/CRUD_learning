@@ -1,16 +1,23 @@
 import { Collection } from 'mongodb';
-import { User } from '../../entities/user'
-import { UserRepository } from '../../application/get_all_users';
+import { UserDocument } from '../../infrastructure/mongodb/userDocument';
+import { User } from '../../entities/user';
+import { mapToResult, mapToUser, mapToUserDocument } from '../../infrastructure/mongodb/userMapper';
+import { Result, UserRepository } from '../../application/useCasesInterfaces';
 
 export class MongoDbUserRepository implements UserRepository {
-    private collection: Collection<User>;
+    private collection: Collection<UserDocument>;
 
-    constructor(collection: Collection<User>) {
+    constructor(collection: Collection<UserDocument>) {
         this.collection = collection;
     }
 
-    async getAllUsersInfo(): Promise<User[]> {
-        const userList = await this.collection.find().toArray();
-        return userList;
+    async createUser(user: User): Promise<Result> {
+        const result = await this.collection.insertOne(mapToUserDocument(user));
+        return mapToResult(result.acknowledged);
+    }
+
+    async getAllUsers(): Promise<User[]> {
+        const userDocumentList = await this.collection.find().toArray();
+        return userDocumentList.map((userDocument) => mapToUser(userDocument));
     }
 }
