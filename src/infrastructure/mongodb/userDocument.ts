@@ -2,7 +2,7 @@ import { Document, ObjectId } from "mongodb";
 import { BaseModel } from "./baseModel";
 
 export interface UserDocument extends Document {
-    _id: ObjectId;
+    _id: ObjectId | undefined;
     email: string;
     password: string;
     username: string;

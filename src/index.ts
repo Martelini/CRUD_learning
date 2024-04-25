@@ -1,8 +1,9 @@
 import { Db, MongoClient } from 'mongodb';
 import { startServer, setServer } from './infrastructure/express/app';
-import { MongoDbUserRepository } from './interfaces/repositories/user_repository';
+import { UserRepositoryImpl } from './interfaces/repositories/userRepository';
 import express from 'express';
 import { UserDocument } from './infrastructure/mongodb/userDocument';
+import { MongoDbUserRepository } from './infrastructure/database/userDatabase';
 
 const url = 'mongodb+srv://souzamateus1998:EV5EGbftxv1fMPMx@cluster0.scduko7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const app = express();
@@ -23,9 +24,10 @@ async function startApp(): Promise<void> {
         reportError({message});
     }
     const userCollection = db.collection<UserDocument>('users');
-    const userRepository = new MongoDbUserRepository(userCollection);
+    const database = new MongoDbUserRepository(userCollection);
+    const userRepositoryImpl = new UserRepositoryImpl(database);
     
-    setServer(app, userRepository);
+    setServer(app, userRepositoryImpl);
     startServer(app);
 }
 

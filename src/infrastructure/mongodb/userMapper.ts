@@ -2,10 +2,15 @@ import { ObjectId } from "mongodb";
 import { User } from "../../entities/user";
 import { UserDocument } from "./userDocument";
 import { Result } from "../../application/useCasesInterfaces";
+import { HttpRequest, HttpResponse } from "../../interfaces/adapters/httpParams";
+
+function defineUserID (id: ObjectId | undefined): string {
+    return '';
+}
 
 export function mapToUser(userDocument: UserDocument): User {
     return new User(
-        userDocument._id.toString(), 
+        defineUserID(userDocument._id), 
         userDocument.email,
         userDocument.password,
         userDocument.username,
@@ -16,13 +21,17 @@ export function mapToUser(userDocument: UserDocument): User {
 
 export function mapToUserDocument(user: User): UserDocument {
     const userDocument: UserDocument = {
-        _id: new ObjectId(user.userId),
+        _id: undefined,
         email: user.email,
         password: user.password,
         username: user.username,
         fullName: user.fullName,
         birthDate: user.birthDate
     }
+    if( user.userId !== undefined ) {
+        userDocument._id = new ObjectId(user.userId);
+    }
+
     return userDocument;
 }
 
@@ -31,13 +40,9 @@ export function mapToResult( acknowleged: boolean ): Result {
     return result;
 }
 
-export function mapBodyToUserDocument( body: any ): UserDocument {
-    const json = JSON.parse(body);
-    if (json.hasOwnProperty)
-    const user: UserDocument = {
-        json._id,
-        json.password,
-        json.username,
-    }
+export function mapBodyToUser( httpBody: HttpRequest["body"] ): User {
+    console.log('httpBody before:', httpBody);
+    const user: User = httpBody as User;
+    console.log('User created:', user);
     return user;
 }
