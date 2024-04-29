@@ -1,8 +1,9 @@
+import 'dotenv/config';
 import express, { Express } from 'express';
 import { createUserRouter } from '../routes/userRoutes';
 import { UserRepositoryImpl } from '../../interfaces/repositories/userRepository';
 
-const PORT = 3000;
+const PORT = process.env.APP_HTTP_PORT;
 
 export async function setServer(app: Express, userRepositoryImpl: UserRepositoryImpl): Promise<void> {
     const router = createUserRouter(userRepositoryImpl);
@@ -12,7 +13,10 @@ export async function setServer(app: Express, userRepositoryImpl: UserRepository
 
 export async function startServer(app: Express): Promise<void> {
     try {
-        app.listen(PORT, () => {
+        if(PORT === undefined) {
+            throw new Error('Could not read HTTP Port');
+        }
+        app.listen(parseInt(PORT), () => {
             console.log(`Server is running on port ${PORT}!`);
         });
 
@@ -20,6 +24,6 @@ export async function startServer(app: Express): Promise<void> {
         let message = 'Unknown error';
         if (error instanceof Error)
             message = error.message;
-        reportError({message});
+        console.log("Error:", message);
     }
 }

@@ -1,16 +1,16 @@
 import { User } from '../../entities/user';
 import { Result, UserRepository } from '../../application/useCasesInterfaces';
 
-export interface Database {
+export interface UserDatabase {
     createUserOnDatabase(user: User): Promise<Result>,
     getAllUsersFromDatabase(): Promise<User[] | undefined>,   
     getUserByIdFromDatabase(userId: string): Promise<User | undefined>,   
 }
 
 export class UserRepositoryImpl implements UserRepository {
-    database: Database;
+    database: UserDatabase;
 
-    constructor(database: Database) {
+    constructor(database: UserDatabase) {
         this.database = database;
     }
 

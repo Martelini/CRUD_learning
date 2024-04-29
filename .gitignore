@@ -1,4 +1,7 @@
 password.txt
 node_modules
+dist
+oldProject
 
 *.js
+*.env

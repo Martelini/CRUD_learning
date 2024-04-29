@@ -3,9 +3,9 @@ import { UserDocument } from '../mongodb/userDocument';
 import { User } from '../../entities/user';
 import { mapToResult, mapToUser, mapToUserDocument } from  '../mongodb/userMapper';
 import { Result, UserRepository } from '../../application/useCasesInterfaces';
-import { Database } from '../../interfaces/repositories/userRepository';
+import { UserDatabase } from '../../interfaces/repositories/userRepository';
 
-export class MongoDbUserRepository implements Database {
+export class MongoDbUserRepository implements UserDatabase {
     private collection: Collection<UserDocument>;
 
     constructor(collection: Collection<UserDocument>) {

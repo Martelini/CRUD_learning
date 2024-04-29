@@ -1,25 +1,32 @@
-// import { MongoClient, Db, Collection } from 'mongodb';
+import 'dotenv/config';
+import { Collection, Db, Document, MongoClient } from 'mongodb';
 
-// let db: Db;
+const url = process.env.MONGODB_URL;
+const dbName = process.env.DATABASE_NAME;
 
-// export async function connectToDatabase(url: string, dbName: string): Promise<void> {
-//     try {
-//         const client = new MongoClient(url);
-//         await client.connect();
-//         db = await client.db(dbName);
-//         console.log('Connected to database!');
-//     } catch (error) {
-//         //await client.close();
-//         let message = 'Unknown error';
-//         if (error instanceof Error)
-//             message = error.message;
-//         reportError({message});
-//     }
-// }
+let mongoDb: Db;
 
-// export function getCollection<T>(collectionName: string): Collection<T> {
-//     if(!db) {
-//         throw new Error("Database not connected!");
-//     }
-//     return db.collection<T>(collectionName);
-// }
+export async function connectToMongoDbDatabase(): Promise<void> {
+    try {
+        if(url === undefined) {
+            throw new Error('Undefined MongoDB URL');
+        }
+        const client = new MongoClient(url);
+        await client.connect();
+        mongoDb = await client.db(dbName);
+        console.log('Connected to database!');
+    } catch (error) {
+        //await client.close();
+        let message = 'Unknown error';
+        if (error instanceof Error)
+            message = error.message;
+        console.log({message});
+    }
+}
+
+export function getCollection<T extends Document>(collectionName: string): Collection<T> {
+    if(!mongoDb) {
+        throw new Error("Database not connected!");
+    }
+    return mongoDb.collection<T>(collectionName);
+}
