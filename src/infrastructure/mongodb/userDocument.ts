@@ -6,5 +6,5 @@ export interface UserDocument extends Document {
     password: string;
     username: string;
     fullName: string;
-    birthDate: Date;
+    birthDate: string;
 }

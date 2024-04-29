@@ -1,12 +1,19 @@
 export class User{
-    userId: string;
+    userId: string | undefined;
     email: string;
     password: string;
     username: string;
     fullName: string;
-    birthDate: Date;
+    birthDate: string;
 
-    constructor(userId: string, email: string, password: string, username: string, fullName: string, birthDate: Date) {
+    constructor(
+        userId: string | undefined, 
+        email: string, 
+        password: string, 
+        username: string, 
+        fullName: string, 
+        birthDate: string
+    ) {
         this.userId = userId;
         this.email = email;
         this.password = password;
