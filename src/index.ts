@@ -1,21 +1,23 @@
 import { startServer, setServer } from './infrastructure/express/app';
-import { UserRepositoryImpl } from './interfaces/repositories/userRepository';
 import express from 'express';
 import { UserDocument } from './infrastructure/mongodb/userDocument';
-import { MongoDbUserRepository } from './infrastructure/database/userDatabase';
+import { UserRepository } from './infrastructure/database/userDatabase';
 import { connectToMongoDbDatabase, getCollection } from './infrastructure/mongodb/mongoConnection';
 
 const app = express();
 
 async function startApp(): Promise<void> {
-    await connectToMongoDbDatabase();
+    try {
+        await connectToMongoDbDatabase();
 
-    const userCollection = getCollection<UserDocument>('users');
-    const database = new MongoDbUserRepository(userCollection);
-    const userRepositoryImpl = new UserRepositoryImpl(database);
-    
-    setServer(app, userRepositoryImpl);
-    startServer(app);
+        const userCollection = getCollection<UserDocument>('users');
+        const userRepository = new UserRepository(userCollection);
+        
+        setServer(app, userRepository);
+        startServer(app);
+    } catch (error) {
+        console.log('Error:', error)   
+    }
 }
 
 startApp();

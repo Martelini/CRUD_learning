@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 
 export interface HttpRequest {
-    body: Request["body"];
-    params: Request["params"];
+    body: unknown;
+    params: unknown;
 }
 
 export interface HttpResponse {
-    status(code: Response["statusCode"]): Response;
-    json(data: Response["json"]): Response;
-}
+    status_code: number;
+    json: unknown;
+} 

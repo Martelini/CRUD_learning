@@ -1,15 +1,11 @@
-import { User } from "../entities/user";
-import { Result, UserRepository } from "./useCasesInterfaces";
+import { User } from '../entities/user';
+import { Result, IUserRepository } from './useCasesInterfaces';
 
 export class CreateUserUseCase {
-    userRepository: UserRepository;
 
-    constructor(userRepository: UserRepository) {
-        this.userRepository = userRepository;
-    }
+    constructor(private readonly userRepository: IUserRepository) {};
 
     async execute(user: User): Promise<Result> {
-        console.log("create_user: execute");
         return await this.userRepository.createUser(user);
     }
 }

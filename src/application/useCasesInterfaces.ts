@@ -1,6 +1,6 @@
 import { User } from "../entities/user";
 
-export interface UserRepository {
+export interface IUserRepository {
     createUser(user: User): Promise<Result>;
     getAllUsers(): Promise<User[] | undefined>;
     getUserById(userId: string): Promise<User | undefined>;

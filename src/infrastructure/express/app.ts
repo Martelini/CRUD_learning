@@ -1,14 +1,14 @@
 import 'dotenv/config';
 import express, { Express } from 'express';
 import { createUserRouter } from '../routes/userRoutes';
-import { UserRepositoryImpl } from '../../interfaces/repositories/userRepository';
+import { UserRepository } from '../database/userDatabase';
 
 const PORT = process.env.APP_HTTP_PORT;
 
-export async function setServer(app: Express, userRepositoryImpl: UserRepositoryImpl): Promise<void> {
-    const router = createUserRouter(userRepositoryImpl);
-    app.use('', router);
+export async function setServer(app: Express, userRepository: UserRepository): Promise<void> {
     app.use(express.json());
+    const router = createUserRouter(userRepository);
+    app.use('', router);
 }
 
 export async function startServer(app: Express): Promise<void> {

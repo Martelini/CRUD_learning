@@ -1,14 +1,10 @@
-import { UserRepository } from "./useCasesInterfaces";
+import { IUserRepository } from "./useCasesInterfaces";
 
 export class GetAllUsersUseCase {
-    userRepository: UserRepository;
 
-    constructor(userRepository: UserRepository) {
-        this.userRepository = userRepository;
-    }
+    constructor(private readonly userRepository: IUserRepository) {}
 
     async execute() {
-        console.log("get_all_users: execute");
         return await this.userRepository.getAllUsers();
     }
 }
