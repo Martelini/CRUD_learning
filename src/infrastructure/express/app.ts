@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express, { Express } from 'express';
-import { createUserRouter } from '../routes/userRoutes';
+import { createUserRouter } from '../routes/userRoutes.v1';
 import { UserRepository } from '../database/userDatabase';
 
 const PORT = process.env.APP_HTTP_PORT;

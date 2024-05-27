@@ -18,7 +18,7 @@ export class UserRepository implements IUserRepository {
 
     async getAllUsers(): Promise<User[] | undefined> {
         const userDocumentList = await this.collection.find().toArray();
-        return userDocumentList ? userDocumentList.map((userDocument) => mapToUser(userDocument)): undefined;
+        return (userDocumentList ? userDocumentList.map((userDocument) => mapToUser(userDocument)) : undefined);
     }
 
     async getUserById(userId: string): Promise<User | undefined> {
