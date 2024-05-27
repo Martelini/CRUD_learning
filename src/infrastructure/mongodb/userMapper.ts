@@ -1,22 +1,24 @@
 import { ObjectId } from "mongodb";
 import { User } from "../../entities/user";
+import { IUserProps } from "../../application/useCasesInterfaces";
 import { UserDocument } from "./userDocument";
 import { Result } from "../../application/useCasesInterfaces";
 import { HttpRequest, HttpResponse } from "../../interfaces/adapters/httpParams";
 
-function defineUserID (id: ObjectId | undefined): string {
-    return '';
+function convertUserIDToString (id: ObjectId | undefined): string {
+    return id? id.toString() : '';
 }
 
 export function mapToUser(userDocument: UserDocument): User {
-    return new User(
-        defineUserID(userDocument._id), 
-        userDocument.email,
-        userDocument.password,
-        userDocument.username,
-        userDocument.fullName,
-        userDocument.birthDate
-    );
+    const userProps: IUserProps = {
+        userId: convertUserIDToString(userDocument._id),
+        email: userDocument.email,
+        password: userDocument.password,
+        username: userDocument.username,
+        fullName: userDocument.fullName,
+        birthDate: userDocument.birthDate
+    }
+    return new User(userProps);
 }
 
 export function mapToUserDocument(user: User): UserDocument {

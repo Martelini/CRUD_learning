@@ -9,3 +9,12 @@ export interface IUserRepository {
 export interface Result {
     status: string;
 }
+
+export interface IUserProps {
+    userId: string | undefined;
+    email: string;
+    password: string;
+    username: string;
+    fullName: string;
+    birthDate: string;
+}
