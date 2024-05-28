@@ -1,33 +1,22 @@
 //import { Router } from "express";
 import express from "express";
-import { GetAllUsersUseCase } from "../../application/getAllUsers";
-import { CreateUserUseCase } from "../../application/createUser";
-import { UserRepository } from "../database/userDatabase";
-import { GetUserByIdUseCase } from "../../application/getUserById";
 import { adaptRouteExpress } from "../../interfaces/adapters/adaptRouteExpress";
-import { CreateUserController } from "../../interfaces/controllers/createUserController";
-import { GetAllUsersController } from "../../interfaces/controllers/getAllUsersController";
+import { ControllerFactory } from "../../interfaces/factories/controllerFactory";
 
 const router = express.Router();
 
-export function createUserRouter(userRepository: UserRepository): express.Router {
-    const getAllUsersUseCase = new GetAllUsersUseCase(userRepository)
-    const createUserUseCase = new CreateUserUseCase(userRepository)
-    const getUserByIdUseCase = new GetUserByIdUseCase(userRepository)
-    const getAllUsersController = new GetAllUsersController(getAllUsersUseCase);
-    const createUserController = new CreateUserController(createUserUseCase);
+export function createUserRouter(): express.Router {
 
     router.get('/v1/helloworld', (req, res) => {res.status(200).json('HelloWorld!')});
 
-    router.get('/v1/users/all', adaptRouteExpress(getAllUsersController));
-    // router.get('/users/:userId', userController.getUserByIdService.bind(userController));
+    router.get('/v1/users/all', adaptRouteExpress(ControllerFactory.createController('getAllUsers')));
+    router.get('/v1/users/:userId', adaptRouteExpress(ControllerFactory.createController('getUserById')));
 
-    router.post('/v1/users/create/', adaptRouteExpress(createUserController));
-    // router.post('/v1/users/create', (req,res) => console.log(req.body));
+    router.post('/v1/users/signUp/', adaptRouteExpress(ControllerFactory.createController('createUser')));
 
-    // router.put('/v1/users/update/:userId', updateUser);
+    router.put('/v1/users/:userId', adaptRouteExpress(ControllerFactory.createController('updateUserById')));
 
-    // router.delete('/v1/users/delete/:userId', deleteUser);
+    router.delete('/v1/users/:userId', adaptRouteExpress(ControllerFactory.createController('deleteUserById')));
 
     // router.post('/v1/users/:userId/createPost', createPost);
 

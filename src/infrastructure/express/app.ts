@@ -5,9 +5,9 @@ import { UserRepository } from '../database/userDatabase';
 
 const PORT = process.env.APP_HTTP_PORT;
 
-export async function setServer(app: Express, userRepository: UserRepository): Promise<void> {
+export async function setServer(app: Express): Promise<void> {
     app.use(express.json());
-    const router = createUserRouter(userRepository);
+    const router = createUserRouter();
     app.use('', router);
 }
 

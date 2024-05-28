@@ -9,11 +9,8 @@ const app = express();
 async function startApp(): Promise<void> {
     try {
         await connectToMongoDbDatabase();
-
-        const userCollection = getCollection<UserDocument>('users');
-        const userRepository = new UserRepository(userCollection);
         
-        setServer(app, userRepository);
+        setServer(app);
         startServer(app);
     } catch (error) {
         console.log('Error:', error)   
